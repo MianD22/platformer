@@ -2,20 +2,22 @@ extends State
 class_name PlayerAttack
 
 @export var player: CharacterBody2D
-@export var animated_sprite: AnimatedSprite2D
+@export var animation_player: AnimationPlayer
 @export var hitbox_collision: CollisionShape2D
 
 var is_anim_finished = false
 
 func enter():
-	animated_sprite.play("attack_side")
+	animation_player.play("Attack")
 	hitbox_collision.disabled = false
 	is_anim_finished = false
-	animated_sprite.animation_finished.connect(_on_animation_finished)
+	if not animation_player.animation_finished.is_connected(_on_animation_finished):
+		animation_player.animation_finished.connect(_on_animation_finished)
 
 func exit():
 	hitbox_collision.disabled = true
-	animated_sprite.animation_finished.disconnect(_on_animation_finished)
+	if animation_player.animation_finished.is_connected(_on_animation_finished):
+		animation_player.animation_finished.disconnect(_on_animation_finished)
 
 func physics_update(delta: float):
 	player.apply_gravity(delta)
@@ -30,6 +32,6 @@ func physics_update(delta: float):
 		else:
 			Transitioned.emit(self, "Move")
 
-func _on_animation_finished():
-	if animated_sprite.animation == "attack_side":
+func _on_animation_finished(anim_name: StringName):
+	if anim_name == "Attack":
 		is_anim_finished = true
