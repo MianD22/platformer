@@ -24,7 +24,7 @@ func physics_update(delta: float):
 		Transitioned.emit(self, "Crouch")
 		return
 	
-	if Input.is_action_just_pressed("attack") and player.is_on_floor():
+	if Input.is_action_just_pressed("attack"):
 		Transitioned.emit(self, "Attack")
 		return
 		

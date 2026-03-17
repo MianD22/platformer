@@ -24,6 +24,7 @@ extends CharacterBody2D
 @export var wall_sliding: float = 1.0
 @export var wall_latching: bool = false
 @export var wall_latching_modifier: bool = false
+@export var wall_coyote_time: float = 0.15
 
 @export_category("Dashing")
 @export_enum("None", "Horizontal", "Vertical", "Four Way", "Eight Way") var dash_type: int
@@ -46,6 +47,10 @@ extends CharacterBody2D
 @export var ground_pound_pause: float = 0.25
 @export var up_to_cancel: bool = false
 
+@export_category("Attack")
+@export var air_hang_time: float = 0.3 ## How long the player stays suspended after an air attack
+@export var air_attack_hits: int = 1 ## Number of air attacks that suspend the player before gravity resumes
+
 # Derived stats
 var acceleration: float
 var deceleration: float
@@ -58,10 +63,14 @@ var max_speed_active: float
 var jump_count: int
 var dash_count: int
 var gravity_active: bool = true
+var was_wall_kicked: bool = false
+var air_attack_count: int = 0
 
 # Input Timers & States
 var jump_buffer_timer: float = 0.0
 var coyote_timer: float = 0.0
+var wall_coyote_timer: float = 0.0
+var last_wall_normal: Vector2 = Vector2.ZERO
 var movement_input_monitoring: bool = true
 var movement_input_monitoring_timer: float = 0.0
 
@@ -104,8 +113,19 @@ func _physics_process(delta):
 		coyote_timer = coyote_time
 		jump_count = jumps
 		dash_count = dashes
+		air_attack_count = 0
 	else:
 		coyote_timer -= delta
+		if is_on_wall():
+			if wall_latching and ((wall_latching_modifier and Input.is_action_pressed("latch")) or not wall_latching_modifier):
+				jump_count = jumps
+			else:
+				jump_count = max(jump_count, jumps - 1)
+			dash_count = dashes
+			wall_coyote_timer = wall_coyote_time
+			last_wall_normal = get_wall_normal()
+		else:
+			wall_coyote_timer -= delta
 		
 	if Input.is_action_just_pressed("jump"):
 		jump_buffer_timer = jump_buffering
@@ -114,9 +134,10 @@ func _physics_process(delta):
 
 func consume_jump():
 	coyote_timer = 0.0
+	wall_coyote_timer = 0.0
 	jump_buffer_timer = 0.0
 
-func apply_gravity(delta):
+func apply_gravity(_delta):
 	if not gravity_active:
 		return
 		
@@ -134,6 +155,8 @@ func wall_kick(dir: int):
 	var vertical_kick = abs(jump_magnitude * sin(wall_kick_angle * (PI / 180)))
 	velocity.y = -vertical_kick
 	velocity.x = horizontal_kick * dir
+	was_wall_kicked = true
+	jump_count = jumps
 	if input_pause_after_wall_jump > 0:
 		pause_input_for(input_pause_after_wall_jump)
 	consume_jump()
@@ -155,11 +178,14 @@ func apply_horizontal_movement(direction, delta):
 		if actual_direction > 0:
 			sprite_2d.flip_h = false
 			hitbox.scale.x = 1
+			hitbox.position.x = abs(hitbox.position.x)
 		else:
 			sprite_2d.flip_h = true
 			hitbox.scale.x = -1
+			hitbox.position.x = -abs(hitbox.position.x)
 	else:
-		velocity.x = move_toward(velocity.x, 0, deceleration * delta)
+		if movement_input_monitoring:
+			velocity.x = move_toward(velocity.x, 0, deceleration * delta)
 		
 	# Corner Cutting
 	if corner_cutting and velocity.y < 0:

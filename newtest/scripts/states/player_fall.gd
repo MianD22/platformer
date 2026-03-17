@@ -24,6 +24,10 @@ func physics_update(delta: float):
 	player.apply_horizontal_movement(direction, delta)
 	player.move_and_slide()
 	
+	if Input.is_action_just_pressed("attack"):
+		Transitioned.emit(self, "Attack")
+		return
+	
 	if Input.is_action_just_pressed("dash") and player.dash_count > 0 and player.dash_type != 0:
 		Transitioned.emit(self, "Dash")
 		return
@@ -32,13 +36,20 @@ func physics_update(delta: float):
 		Transitioned.emit(self, "GroundPound")
 		return
 	
-	if player.is_on_wall():
-		if player.wall_jump and Input.is_action_just_pressed("jump"):
+	if player.wall_jump and Input.is_action_just_pressed("jump"):
+		if player.is_on_wall():
 			var dir = 1 if player.get_wall_normal().x > 0 else -1
 			player.wall_kick(dir)
 			Transitioned.emit(self, "Jump")
 			return
-		elif (player.wall_sliding != 1.0 or player.wall_latching) and player.velocity.y >= 0:
+		elif player.wall_coyote_timer > 0.0:
+			var dir = 1 if player.last_wall_normal.x > 0 else -1
+			player.wall_kick(dir)
+			Transitioned.emit(self, "Jump")
+			return
+			
+	if player.is_on_wall():
+		if (player.wall_sliding != 1.0 or player.wall_latching) and player.velocity.y >= 0:
 			Transitioned.emit(self, "WallSlide")
 			return
 	
