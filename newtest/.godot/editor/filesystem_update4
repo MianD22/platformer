@@ -1,8 +1,4 @@
-res://Scenes/player.tscn
-res://scripts/player.gd
-res://scripts/states/player_jump.gd
-res://scripts/states/player_fall.gd
-res://scripts/states/player_attack.gd
-res://scripts/states/player_idle.gd
-res://scripts/states/player_move.gd
+res://Scenes/spike.tscn
 res://Scenes/level.tscn
+res://scripts/hurtbox_component.gd
+res://scripts/player.gd

@@ -40,9 +40,6 @@ extends CharacterBody2D
 @export var right_raycast: RayCast2D
 
 @export_category("Down Input")
-@export var crouch: bool = false
-@export var can_roll: bool = false
-@export var roll_length: float = 2.0
 @export var ground_pound: bool = false
 @export var ground_pound_pause: float = 0.25
 @export var up_to_cancel: bool = false
@@ -50,6 +47,10 @@ extends CharacterBody2D
 @export_category("Attack")
 @export var air_hang_time: float = 0.3 ## How long the player stays suspended after an air attack
 @export var air_attack_hits: int = 1 ## Number of air attacks that suspend the player before gravity resumes
+
+@export_category("Damage Feedback")
+@export var flash_duration: float = 1.0
+@export var flashes_count: int = 5
 
 # Derived stats
 var acceleration: float
@@ -82,8 +83,14 @@ var collider_pos_lock_y: float
 @onready var hitbox = $HitboxComponent
 @onready var hitbox_collision = hitbox.get_node("CollisionShape2D")
 @onready var collision_shape_2d = $CollisionShape2D
+@onready var health_component = $HealthComponent
+@onready var hurtbox_component = $HurtboxComponent
 
 func _ready():
+	health_component.died.connect(_on_player_died)
+	if hurtbox_component:
+		hurtbox_component.is_invincibility_enabled = true
+		hurtbox_component.invincibility_started.connect(_on_invincibility_started)
 	hitbox_collision.disabled = true
 	update_stats()
 	jump_count = jumps
@@ -136,6 +143,16 @@ func consume_jump():
 	coyote_timer = 0.0
 	wall_coyote_timer = 0.0
 	jump_buffer_timer = 0.0
+
+func _on_player_died():
+	get_tree().call_deferred("reload_current_scene")
+
+func _on_invincibility_started():
+	var tween = create_tween()
+	var flash_interval = flash_duration / (flashes_count * 2.0)
+	for i in range(flashes_count):
+		tween.tween_property(sprite_2d, "modulate:a", 0.0, flash_interval)
+		tween.tween_property(sprite_2d, "modulate:a", 1.0, flash_interval)
 
 func apply_gravity(_delta):
 	if not gravity_active:

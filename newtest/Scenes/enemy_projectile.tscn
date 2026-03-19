@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bihec1365rta3"]
+
+[ext_resource type="PackedScene" uid="uid://bl6uaw5xlqkmc" path="res://Scenes/hitbox_component.tscn" id="1_33pam"]
+[ext_resource type="Script" uid="uid://c2td5uamlbint" path="res://scripts/enemystates/enemy_projectile.gd" id="1_ibebl"]
+[ext_resource type="Texture2D" uid="uid://blchh6iw3im4f" path="res://Art/enemy/projectile.png" id="2_gjudp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gjudp"]
+
+[node name="enemy_projectile" type="Area2D" unique_id=1544076453]
+collision_layer = 5
+script = ExtResource("1_ibebl")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=398090411]
+texture = ExtResource("2_gjudp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1816706996]
+shape = SubResource("CircleShape2D_gjudp")
+
+[node name="HitboxComponent" parent="." unique_id=139511599 instance=ExtResource("1_33pam")]
+collision_layer = 4
+collision_mask = 2
+damage = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" unique_id=1574554074]
+shape = SubResource("CircleShape2D_gjudp")
