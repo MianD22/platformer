@@ -4,17 +4,11 @@ class_name PlayerFall
 @export var player: CharacterBody2D
 @export var animation_player: AnimationPlayer
 
-var is_anim_finished = false
-
 func enter():
 	animation_player.play("Fall")
-	is_anim_finished = false
-	if not animation_player.animation_finished.is_connected(_on_animation_finished):
-		animation_player.animation_finished.connect(_on_animation_finished)
 
 func exit():
-	if animation_player.animation_finished.is_connected(_on_animation_finished):
-		animation_player.animation_finished.disconnect(_on_animation_finished)
+	pass
 
 func physics_update(delta: float):
 	player.apply_gravity(delta)
@@ -23,6 +17,14 @@ func physics_update(delta: float):
 	var direction = Input.get_axis("move_left", "move_right")
 	player.apply_horizontal_movement(direction, delta)
 	player.move_and_slide()
+	
+	if Input.is_action_just_pressed("teleport"):
+		Transitioned.emit(self, "Teleport")
+		return
+	
+	if Input.is_action_just_pressed("dodge"):
+		Transitioned.emit(self, "Dodge")
+		return
 	
 	if Input.is_action_just_pressed("attack"):
 		Transitioned.emit(self, "Attack")
@@ -63,12 +65,8 @@ func physics_update(delta: float):
 		Transitioned.emit(self, "Jump")
 		return
 		
-	if player.is_on_floor() and is_anim_finished:
+	if player.is_on_floor():
 		if direction != 0:
 			Transitioned.emit(self, "Move")
 		else:
 			Transitioned.emit(self, "Idle")
-
-func _on_animation_finished(anim_name: StringName):
-	if anim_name == "Fall":
-		is_anim_finished = true

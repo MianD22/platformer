@@ -52,6 +52,10 @@ extends CharacterBody2D
 @export var flash_duration: float = 1.0
 @export var flashes_count: int = 5
 
+@export_category("Dodge")
+@export var dodge_speed: float = 300.0 ## Horizontal speed during the dodge
+@export var dodge_duration: float = 0.15 ## How long the dodge lasts (seconds)
+
 # Derived stats
 var acceleration: float
 var deceleration: float
@@ -85,6 +89,7 @@ var collider_pos_lock_y: float
 @onready var collision_shape_2d = $CollisionShape2D
 @onready var health_component = $HealthComponent
 @onready var hurtbox_component = $HurtboxComponent
+@onready var state_machine = $StateMachine
 
 func _ready():
 	health_component.died.connect(_on_player_died)
@@ -92,6 +97,7 @@ func _ready():
 		hurtbox_component.is_invincibility_enabled = true
 		hurtbox_component.invincibility_started.connect(_on_invincibility_started)
 	hitbox_collision.disabled = true
+	hitbox.area_entered.connect(_on_attack_hitbox_entered)
 	update_stats()
 	jump_count = jumps
 	dash_count = dashes
@@ -146,6 +152,16 @@ func consume_jump():
 
 func _on_player_died():
 	get_tree().call_deferred("reload_current_scene")
+
+func _on_attack_hitbox_entered(area: Area2D):
+	if area is Spike:
+		# Reset movement abilities when the attack hits a spike
+		jump_count = jumps + 1
+		dash_count = dashes
+		air_attack_count = 0
+		# Trigger the air hang (freeze in air) only on spike hit
+		if state_machine.current_state is PlayerAttack:
+			state_machine.current_state.trigger_air_hang()
 
 func _on_invincibility_started():
 	var tween = create_tween()

@@ -12,6 +12,14 @@ func physics_update(delta: float):
 	player.apply_horizontal_movement(0, delta)
 	player.move_and_slide()
 	
+	if Input.is_action_just_pressed("teleport"):
+		Transitioned.emit(self, "Teleport")
+		return
+	
+	if Input.is_action_just_pressed("dodge"):
+		Transitioned.emit(self, "Dodge")
+		return
+	
 	if Input.is_action_just_pressed("dash") and player.dash_count > 0 and player.dash_type != 0:
 		Transitioned.emit(self, "Dash")
 		return

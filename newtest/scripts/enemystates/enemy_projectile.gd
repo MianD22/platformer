@@ -40,13 +40,13 @@ func setup(start_pos: Vector2, target_pos: Vector2, speed_modifier: float = 1.0,
 		
 	var time_down = sqrt(2 * height_difference / proj_gravity)
 	
-	var total_time = time_up + time_down
+	# Base flight time comes from the arc, speed_modifier scales it (lower = faster)
+	var total_time = (time_up + time_down) * speed_modifier
 	
-	# Calculate velocities
-	velocity.y = -sqrt(2 * proj_gravity * actual_arc_height)
-	
-	# Apply the speed modifier directly to the horizontal travel time
-	velocity.x = (displacement.x / total_time) * speed_modifier
+	# Use kinematic equations to guarantee landing on target:
+	# From d = v*t + 0.5*g*t^2, solve for v = (d - 0.5*g*t^2) / t
+	velocity.x = displacement.x / total_time
+	velocity.y = (displacement.y - 0.5 * proj_gravity * total_time * total_time) / total_time
 
 func _on_body_entered(body):
 	# Queue free if it hits a wall/floor (Assuming your floor is on a specific collision layer)

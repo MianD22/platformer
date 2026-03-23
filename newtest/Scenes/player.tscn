@@ -12,9 +12,11 @@
 [ext_resource type="Script" uid="uid://34vfv42un5bc" path="res://scripts/playerstates/player_jump.gd" id="13_igrcy"]
 [ext_resource type="Script" uid="uid://b8i4e347rqepc" path="res://scripts/playerstates/player_fall.gd" id="14_fs7ks"]
 [ext_resource type="Script" uid="uid://rwhs8dhwluy6" path="res://scripts/playerstates/player_wall_slide.gd" id="15_fs7ks"]
+[ext_resource type="Script" uid="uid://cc08ft3epq4cx" path="res://scripts/playerstates/player_teleport.gd" id="15_olqyp"]
 [ext_resource type="Script" uid="uid://dbst78oeimu2n" path="res://scripts/playerstates/player_dash.gd" id="16_l6n3p"]
 [ext_resource type="Script" uid="uid://o8swgvnorqed" path="res://scripts/playerstates/player_ground_pound.gd" id="19_bi64h"]
 [ext_resource type="Texture2D" uid="uid://biuw1217cy3mm" path="res://Art/newplayer/male_hero_template-combo_1.png" id="20_2ijsl"]
+[ext_resource type="Script" uid="uid://dhlupbj0a5mk0" path="res://scripts/playerstates/player_dodge.gd" id="20_dodge"]
 [ext_resource type="Texture2D" uid="uid://b8h6v4nofo68o" path="res://Art/newplayer/male_hero_template-fall.png" id="20_olqyp"]
 [ext_resource type="Texture2D" uid="uid://b534juqsi41ou" path="res://Art/newplayer/male_hero_template-idle.png" id="21_wpjfl"]
 [ext_resource type="Texture2D" uid="uid://owsddxxxcae2" path="res://Art/newplayer/male_hero_template-jump.png" id="22_bi64h"]
@@ -524,7 +526,7 @@ collision_layer = 2
 script = ExtResource("1_8erm5")
 accel_time = 0.0
 decel_time = 0.0
-jump_height = 3.0
+jump_height = 2.5
 wall_jump = true
 wall_kick_angle = 70.0
 wall_latching = true
@@ -537,7 +539,7 @@ left_raycast = NodePath("LeftRaycast")
 middle_raycast = NodePath("MiddleRaycast")
 right_raycast = NodePath("RightRaycast")
 ground_pound = true
-air_hang_time = 0.2
+air_hang_time = 0.0
 air_attack_hits = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=799716034]
@@ -611,6 +613,16 @@ animation_player = NodePath("../../AnimationPlayer")
 
 [node name="GroundPound" type="Node" parent="StateMachine" unique_id=548444290 node_paths=PackedStringArray("player", "animation_player")]
 script = ExtResource("19_bi64h")
+player = NodePath("../..")
+animation_player = NodePath("../../AnimationPlayer")
+
+[node name="Dodge" type="Node" parent="StateMachine" unique_id=699455893 node_paths=PackedStringArray("player", "animation_player")]
+script = ExtResource("20_dodge")
+player = NodePath("../..")
+animation_player = NodePath("../../AnimationPlayer")
+
+[node name="Teleport" type="Node" parent="StateMachine" unique_id=1173579812 node_paths=PackedStringArray("player", "animation_player")]
+script = ExtResource("15_olqyp")
 player = NodePath("../..")
 animation_player = NodePath("../../AnimationPlayer")
 

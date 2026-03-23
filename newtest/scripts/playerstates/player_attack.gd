@@ -23,15 +23,9 @@ func enter():
 		hitbox.position.x = abs(hitbox.position.x)
 		hitbox.scale.x = 1
 	
-	# Air attack logic
+	# Track if the attack started in the air
 	was_in_air = not player.is_on_floor()
-	if was_in_air:
-		player.air_attack_count += 1
-		if player.air_attack_count <= player.air_attack_hits:
-			# Suspending air attack: freeze in the air
-			player.gravity_active = false
-			player.velocity.y = 0
-			hang_timer = player.air_hang_time
+	hang_timer = 0.0
 	
 	if not animation_player.animation_finished.is_connected(_on_animation_finished):
 		animation_player.animation_finished.connect(_on_animation_finished)
@@ -42,6 +36,12 @@ func exit():
 	if animation_player.animation_finished.is_connected(_on_animation_finished):
 		animation_player.animation_finished.disconnect(_on_animation_finished)
 
+func trigger_air_hang():
+	# Called when the attack hitbox collides with a spike
+	player.gravity_active = false
+	player.velocity.y = 0
+	hang_timer = player.air_hang_time
+
 func physics_update(delta: float):
 	# Handle air hang timer
 	if hang_timer > 0:
@@ -49,8 +49,8 @@ func physics_update(delta: float):
 		if hang_timer <= 0:
 			player.gravity_active = true
 	
-	# Only apply gravity if on ground or past the suspending hit limit
-	if not was_in_air or player.air_attack_count > player.air_attack_hits or hang_timer <= 0:
+	# Apply gravity normally unless currently hanging
+	if hang_timer <= 0:
 		player.apply_gravity(delta)
 	
 	# Slide to a stop when attacking

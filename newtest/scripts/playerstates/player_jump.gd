@@ -25,6 +25,10 @@ func physics_update(delta: float):
 	player.apply_horizontal_movement(direction, delta)
 	player.move_and_slide()
 	
+	if Input.is_action_just_pressed("teleport"):
+		Transitioned.emit(self, "Teleport")
+		return
+	
 	if Input.is_action_just_pressed("attack"):
 		Transitioned.emit(self, "Attack")
 		return

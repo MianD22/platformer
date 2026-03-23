@@ -5,12 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://blchh6iw3im4f" path="res://Art/enemy/projectile.png" id="2_gjudp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gjudp"]
+radius = 3.1622777
 
 [node name="enemy_projectile" type="Area2D" unique_id=1544076453]
 collision_layer = 5
 script = ExtResource("1_ibebl")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=398090411]
+scale = Vector2(0.345, 0.345)
 texture = ExtResource("2_gjudp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1816706996]

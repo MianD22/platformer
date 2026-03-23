@@ -31,7 +31,6 @@ tile_map_data = PackedByteArray("AAD4//7/AAAAAAAAAAD4////AAAAAAEAAAD5//7/AAABAAA
 tile_set = SubResource("TileSet_6phgx")
 
 [node name="enemy" parent="." unique_id=1346481901 instance=ExtResource("3_6phgx")]
-visible = false
 position = Vector2(-136, -234)
 
 [node name="Node" type="Node" parent="." unique_id=230644112]
