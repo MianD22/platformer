@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://c5evxnhunxy3r"]
+
+[node name="PauseMenu" type="Control" unique_id=1821510549]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=188446579]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.09019608, 0.09019608, 0.09019608, 0.8980392)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=816953093]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=136905484]
+layout_mode = 2
+text = "PAUSED"
+
+[node name="DoubleJumpToggle" type="CheckButton" parent="VBoxContainer" unique_id=683820711]
+layout_mode = 2
+text = "Double Jump\""

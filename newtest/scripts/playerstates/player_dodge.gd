@@ -5,6 +5,8 @@ class_name PlayerDodge
 @export var animation_player: AnimationPlayer
 
 var dodge_timer: float = 0.0
+## Fraction of dodge_duration at each edge that counts as a "perfect" dodge.
+var perfect_dodge_margin: float = 0.2
 
 func enter():
 	# Make the player invulnerable during the dodge
@@ -25,9 +27,17 @@ func enter():
 	player.velocity = Vector2(dir * player.dodge_speed, 0)
 	dodge_timer = player.dodge_duration
 
+	# Listen for projectiles passing through the hurtbox while invincible
+	if not player.hurtbox_component.area_entered.is_connected(_on_dodge_area_entered):
+		player.hurtbox_component.area_entered.connect(_on_dodge_area_entered)
+
 func exit():
 	player.gravity_active = true
 	player.hurtbox_component.is_invincible = false
+
+	# Stop listening once the dodge is over
+	if player.hurtbox_component.area_entered.is_connected(_on_dodge_area_entered):
+		player.hurtbox_component.area_entered.disconnect(_on_dodge_area_entered)
 
 func physics_update(delta: float):
 	dodge_timer -= delta
@@ -40,3 +50,17 @@ func physics_update(delta: float):
 		return
 
 	player.move_and_slide()
+
+func _on_dodge_area_entered(area: Area2D) -> void:
+	if not area is HitboxComponent:
+		return
+
+	# How far into the dodge we are (0 = just started, dodge_duration = about to end)
+	var elapsed = player.dodge_duration - dodge_timer
+	var margin = perfect_dodge_margin * player.dodge_duration
+
+	# Perfect if the projectile arrived right at the start of the dodge
+	if elapsed <= margin:
+		print("Perfect Dodge!")
+	else:
+		print("Dodge!")

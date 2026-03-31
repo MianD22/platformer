@@ -1,8 +1,2 @@
 res://Scenes/level.tscn
-res://scripts/playerstates/player_dash.gd
-res://scripts/playerstates/player_fall.gd
-res://scripts/playerstates/player_idle.gd
-res://scripts/playerstates/player_jump.gd
-res://scripts/playerstates/player_move.gd
-res://Scenes/player.tscn
-res://scripts/playerstates/player_teleport.gd
+res://Scenes/pause_menu.tscn
