@@ -55,6 +55,7 @@ extends CharacterBody2D
 @export_category("Dodge")
 @export var dodge_speed: float = 300.0 ## Horizontal speed during the dodge
 @export var dodge_duration: float = 0.15 ## How long the dodge lasts (seconds)
+@export var pdodge_tp_enabled: bool = false ## Whether perfect dodge transitions into teleport state
 
 # Derived stats
 var acceleration: float
@@ -70,6 +71,7 @@ var dash_count: int
 var gravity_active: bool = true
 var was_wall_kicked: bool = false
 var air_attack_count: int = 0
+var force_auto_teleport_timer: float = 0.0
 
 # Input Timers & States
 var jump_buffer_timer: float = 0.0

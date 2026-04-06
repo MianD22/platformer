@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cclkqnsbw0tpe" path="res://Scenes/player.tscn" id="2_k5f4k"]
 [ext_resource type="PackedScene" uid="uid://ch52h7vl17of4" path="res://Scenes/enemy.tscn" id="3_6phgx"]
 [ext_resource type="PackedScene" uid="uid://btswpudd0l62q" path="res://Scenes/spike.tscn" id="4_81xng"]
+[ext_resource type="PackedScene" uid="uid://c5evxnhunxy3r" path="res://Scenes/pause_menu.tscn" id="5_wqkje"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k5f4k"]
 texture = ExtResource("1_tumq0")
@@ -25,6 +26,7 @@ sources/0 = SubResource("TileSetAtlasSource_k5f4k")
 
 [node name="Player" parent="." unique_id=242516304 instance=ExtResource("2_k5f4k")]
 position = Vector2(45, -70)
+jumps = 0
 dash_type = 0
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=783442310]
@@ -32,7 +34,7 @@ tile_map_data = PackedByteArray("AAD4//7/AAAAAAAAAAD4////AAAAAAEAAAD5//7/AAABAAA
 tile_set = SubResource("TileSet_6phgx")
 
 [node name="enemy" parent="." unique_id=1346481901 instance=ExtResource("3_6phgx")]
-position = Vector2(-136, -234)
+position = Vector2(445, -67)
 
 [node name="Node" type="Node" parent="." unique_id=230644112]
 
@@ -63,3 +65,7 @@ scale = Vector2(1.155, 1.155)
 position = Vector2(696, -288.295)
 rotation = 4.712389
 scale = Vector2(1.155, 1.155)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1630107463]
+
+[node name="PauseMenu" parent="CanvasLayer" unique_id=1821510549 instance=ExtResource("5_wqkje")]

@@ -6,9 +6,9 @@ extends CharacterBody2D
 @onready var detection_zone = $PlayerDetectionZone
 @onready var sprite_2d = $Sprite2D
 
-@export var projectile_speed: float = 1.0 ## The time in seconds it takes for the projectile to hit its target. Lower is faster.
+@export var projectile_speed: float = 200.0 ## The speed of the projectile in pixels per second.
 @export var attack_cooldown: float = 2.0 ## How many seconds the enemy waits between attacks.
-@export var arc_height: float = 64.0 ## The maximum pixel height the projectile will arc upwards.
+@export var close_attack_range: float = 50.0 ## Range within which enemy will use melee hit.
 
 @export_group("Damage Feedback")
 @export var flash_duration: float = 0.3
@@ -65,5 +65,5 @@ func spawn_projectile():
 	# Add projectile to the main scene tree so it moves independently of the enemy
 	get_tree().current_scene.add_child(proj) 
 	
-	# Setup the projectile to calculate the arc math towards the target
-	proj.setup(shoot_point.global_position, target.global_position, projectile_speed, arc_height)
+	# Setup the projectile to shoot straight towards the target
+	proj.setup(shoot_point.global_position, target.global_position, projectile_speed)

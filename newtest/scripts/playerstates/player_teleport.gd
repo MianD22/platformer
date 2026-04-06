@@ -52,6 +52,13 @@ func physics_update(_delta: float):
 	if not is_instance_valid(hologram):
 		return
 
+	# Handle forced auto-teleport countdown
+	if "force_auto_teleport_timer" in player and player.force_auto_teleport_timer > 0.0:
+		player.force_auto_teleport_timer -= _delta
+		if player.force_auto_teleport_timer <= 0.0:
+			_finish_teleport()
+			return
+
 	# Check for teleport key to finish
 	if Input.is_action_just_pressed("teleport"):
 		_finish_teleport()
@@ -99,6 +106,10 @@ func _cleanup():
 	# Unpause the scene tree and restore process mode
 	player.get_tree().paused = false
 	player.process_mode = original_process_mode
+
+	# Reset timer
+	if "force_auto_teleport_timer" in player:
+		player.force_auto_teleport_timer = 0.0
 
 	# Show the real player sprite
 	player.sprite_2d.visible = true

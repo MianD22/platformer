@@ -19,8 +19,18 @@ func update(_delta):
 func attack():
 	enemy.attack_timer = enemy.attack_cooldown
 	is_attacking = true
-	# Play the animation (which will trigger spawn_projectile() halfway through)
-	enemy.animation_player.play("Attack")
+	
+	# Choose animation based on distance to player
+	if enemy.target.global_position.x > enemy.global_position.x:
+		enemy.scale.x = -1
+	else:
+		enemy.scale.x = 1
+		
+	if enemy.global_position.distance_to(enemy.target.global_position) <= enemy.close_attack_range:
+		enemy.animation_player.play("Hit")
+	else:
+		# Play the animation (which will trigger spawn_projectile() halfway through)
+		enemy.animation_player.play("Attack")
 	
 	# Wait for the animation to finish before doing anything else
 	await enemy.animation_player.animation_finished

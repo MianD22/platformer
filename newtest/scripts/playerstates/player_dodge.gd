@@ -19,10 +19,10 @@ func enter():
 	if animation_player.has_animation("Walk"):
 		animation_player.play("Walk")
 
-	# Determine dodge direction: use input if held, otherwise face direction
+	# Determine dodge direction: use input if held, otherwise dodge backwards if standing still
 	var dir = Input.get_axis("move_left", "move_right")
 	if dir == 0:
-		dir = -1.0 if player.sprite_2d.flip_h else 1.0
+		dir = 1.0 if player.sprite_2d.flip_h else -1.0
 
 	player.velocity = Vector2(dir * player.dodge_speed, 0)
 	dodge_timer = player.dodge_duration
@@ -62,5 +62,16 @@ func _on_dodge_area_entered(area: Area2D) -> void:
 	# Perfect if the projectile arrived right at the start of the dodge
 	if elapsed <= margin:
 		print("Perfect Dodge!")
+		
+		if "pdodge_tp_enabled" in player and player.pdodge_tp_enabled:
+			player.force_auto_teleport_timer = 3.0
+			Transitioned.emit(self, "Teleport")
+			return
+			
+		if Engine.time_scale == 1.0:
+			Engine.time_scale = 0.2
+			# Use ignore_time_scale=true so it lasts 0.3 real-world seconds
+			await get_tree().create_timer(0.3, true, false, true).timeout
+			Engine.time_scale = 1.0
 	else:
 		print("Dodge!")
