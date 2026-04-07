@@ -1,0 +1,3 @@
+res://Scenes/level.tscn
+res://Scenes/player.tscn
+res://scripts/camera_zone.gd

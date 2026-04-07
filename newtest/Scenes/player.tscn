@@ -523,6 +523,7 @@ _data = {
 
 [node name="Player" type="CharacterBody2D" unique_id=242516304 node_paths=PackedStringArray("left_raycast", "middle_raycast", "right_raycast") groups=["player"]]
 collision_layer = 2
+collision_mask = 9
 script = ExtResource("1_8erm5")
 accel_time = 0.0
 decel_time = 0.0
@@ -570,6 +571,12 @@ shape = SubResource("CapsuleShape2D_nv4vc")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1112000711]
 zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_horizontal_offset = 0.3
+drag_vertical_offset = 0.3
 
 [node name="StateMachine" type="Node" parent="." unique_id=764175910 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("9_7dp3o")
