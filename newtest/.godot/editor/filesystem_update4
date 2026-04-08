@@ -1,3 +1,7 @@
+res://Scenes/cam_2d_zone.tscn
+res://cam_2d_zone.gd
+res://Scenes/camera_zone.tscn
 res://Scenes/level.tscn
-res://Scenes/player.tscn
 res://scripts/camera_zone.gd
+res://scripts/cam_2d_zone.gd
+res://Scenes/player.tscn

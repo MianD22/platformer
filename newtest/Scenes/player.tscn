@@ -569,15 +569,6 @@ health_component = NodePath("../HealthComponent")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=411750981]
 shape = SubResource("CapsuleShape2D_nv4vc")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1112000711]
-zoom = Vector2(2, 2)
-position_smoothing_enabled = true
-position_smoothing_speed = 10.0
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-drag_horizontal_offset = 0.3
-drag_vertical_offset = 0.3
-
 [node name="StateMachine" type="Node" parent="." unique_id=764175910 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("9_7dp3o")
 initial_state = NodePath("Idle")

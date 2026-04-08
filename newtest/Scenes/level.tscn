@@ -5,7 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://ch52h7vl17of4" path="res://Scenes/enemy.tscn" id="3_6phgx"]
 [ext_resource type="PackedScene" uid="uid://btswpudd0l62q" path="res://Scenes/spike.tscn" id="4_81xng"]
 [ext_resource type="PackedScene" uid="uid://c5evxnhunxy3r" path="res://Scenes/pause_menu.tscn" id="5_wqkje"]
-[ext_resource type="Script" uid="uid://clngprk3gmvsk" path="res://scripts/camera_zone.gd" id="6_0f350"]
+[ext_resource type="Script" uid="uid://bbv035yqjtg4v" path="res://scripts/camera_zone.gd" id="6_0f350"]
+[ext_resource type="PackedScene" uid="uid://cxvkb718cmxwa" path="res://Scenes/cam_2d_zone.tscn" id="7_8c0lf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k5f4k"]
 texture = ExtResource("1_tumq0")
@@ -24,7 +25,7 @@ physics_layer_0/collision_mask = 0
 sources/0 = SubResource("TileSetAtlasSource_k5f4k")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8c0lf"]
-size = Vector2(701.5, 276)
+size = Vector2(642.75, 276)
 
 [node name="Level" type="Node2D" unique_id=1051133088]
 
@@ -74,12 +75,32 @@ scale = Vector2(1.155, 1.155)
 
 [node name="PauseMenu" parent="CanvasLayer" unique_id=1821510549 instance=ExtResource("5_wqkje")]
 
-[node name="CameraZone" type="Area2D" parent="." unique_id=874656780]
+[node name="CameraZoneArea2D" type="Area2D" parent="." unique_id=112725100]
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("6_0f350")
-lock_to_zone = true
+zoom = Vector2(1.5, 1.5)
+fixed_position = Vector2(-622.5, -147)
+metadata/_custom_type_script = "uid://bbv035yqjtg4v"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraZone" unique_id=1135167736]
-position = Vector2(-692.25, -148)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraZoneArea2D" unique_id=1235905430]
+position = Vector2(-637.625, -147)
+shape = SubResource("RectangleShape2D_8c0lf")
+
+[node name="Cam2DZone" parent="." unique_id=523788630 instance=ExtResource("7_8c0lf")]
+position = Vector2(-1181, -31)
+zoom = Vector2(2.86, 2.86)
+
+[node name="CameraZoneArea2D2" type="Area2D" parent="." unique_id=409853960]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("6_0f350")
+zoom = Vector2(1.5, 1.5)
+follow_player = true
+limit_camera = true
+limit_left = -320.0
+metadata/_custom_type_script = "uid://bbv035yqjtg4v"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraZoneArea2D2" unique_id=1349532565]
+position = Vector2(8, -152)
 shape = SubResource("RectangleShape2D_8c0lf")

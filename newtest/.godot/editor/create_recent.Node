@@ -1,4 +1,5 @@
 CollisionShape2D
+Camera2D
 Area2D
 CheckButton
 Button
@@ -11,4 +12,3 @@ CollisionPolygon2D
 Sprite2D
 AnimationPlayer
 Marker2D
-CharacterBody2D
