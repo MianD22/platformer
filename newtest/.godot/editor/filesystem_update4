@@ -1,2 +1,4 @@
 res://Scenes/level.tscn
-res://scripts/camera_zone.gd
+res://Scenes/player.tscn
+res://scripts/hurtbox_component.gd
+res://scripts/playerstates/player_dash.gd

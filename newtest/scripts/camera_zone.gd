@@ -7,6 +7,8 @@ class_name CameraZoneArea2D
 @export var fixed_position: Vector2 = Vector2.ZERO
 
 @export var limit_camera: bool = false
+@export var limit_shape: CollisionShape2D
+
 @export var limit_left: float = -10000
 @export var limit_top: float = -10000
 @export var limit_right: float = 10000
@@ -18,6 +20,16 @@ var cam_node: Camera2D
 func _ready() -> void:
 	collisionshape = get_child(0)
 	monitorable = false
+	
+	if limit_shape and limit_shape.shape is RectangleShape2D:
+		var rect_shape = limit_shape.shape as RectangleShape2D
+		var global_pos = limit_shape.global_position
+		var half_size = rect_shape.size / 2.0
+		limit_left = global_pos.x - half_size.x
+		limit_right = global_pos.x + half_size.x
+		limit_top = global_pos.y - half_size.y
+		limit_bottom = global_pos.y + half_size.y
+		limit_camera = true
 	
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)

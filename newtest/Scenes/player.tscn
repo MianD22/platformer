@@ -23,13 +23,13 @@
 [ext_resource type="Texture2D" uid="uid://ddrwk8wig3skj" path="res://Art/newplayer/male_hero_template-walk.png" id="23_2ijsl"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8erm5"]
-height = 33.79
+height = 36.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yh6i2"]
 size = Vector2(7.874016, 8.923885)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nv4vc"]
-height = 31.7
+height = 36.0
 
 [sub_resource type="Animation" id="Animation_fs7ks"]
 resource_name = "Attack"
@@ -535,6 +535,7 @@ wall_latching_modifier = true
 wall_coyote_time = 0.3
 dash_type = 1
 dash_cancel = false
+dash_length = 2.0
 corner_cutting = true
 left_raycast = NodePath("LeftRaycast")
 middle_raycast = NodePath("MiddleRaycast")
@@ -542,6 +543,8 @@ right_raycast = NodePath("RightRaycast")
 ground_pound = true
 air_hang_time = 0.0
 air_attack_hits = 2
+flash_duration = 0.5
+flashes_count = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=799716034]
 position = Vector2(-2.385, 5.9)
@@ -567,6 +570,7 @@ collision_mask = 4
 health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=411750981]
+position = Vector2(-1.11, 5.455)
 shape = SubResource("CapsuleShape2D_nv4vc")
 
 [node name="StateMachine" type="Node" parent="." unique_id=764175910 node_paths=PackedStringArray("initial_state")]

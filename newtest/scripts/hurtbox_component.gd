@@ -2,7 +2,7 @@ extends Area2D
 class_name HurtboxComponent
 
 @export var health_component: HealthComponent
-@export var invincibility_duration: float = 1.0
+@export var invincibility_duration: float = 0.5
 @export var is_invincibility_enabled: bool = false
 
 var is_invincible: bool = false
@@ -30,3 +30,7 @@ func start_invincibility():
 	await get_tree().create_timer(invincibility_duration).timeout
 	
 	is_invincible = false
+	
+	for area in get_overlapping_areas():
+		if area is HitboxComponent:
+			_on_area_entered(area)
